@@ -1,11 +1,11 @@
-import { MailIcon } from "@heroicons/react/solid";
+import { MailIcon, UsersIcon } from "@heroicons/react/solid";
 import { HTMLInputTypeAttribute } from "react";
 
 interface InputBoxProps {
   label: string;
   type: HTMLInputTypeAttribute;
   placeholder: string;
-  icon?: "mail";
+  icon?: "mail" | "users";
 }
 
 export default function InputBox({
@@ -19,12 +19,16 @@ export default function InputBox({
   switch (icon) {
     case "mail":
       Icon = MailIcon;
+      break;
+    case "users":
+      Icon = UsersIcon;
+      break;
     default:
       Icon = MailIcon;
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full mb-4">
       <label htmlFor={type} className="block text-lg font-medium text-gray-700">
         {label}
       </label>
@@ -38,7 +42,7 @@ export default function InputBox({
           type={type}
           name={type}
           id={type}
-          className={`focus:ring-indigo-500 focus:border-indigo-500 block w-full ${
+          className={`focus:ring-blue-500 focus:border-blue-500 block w-full ${
             icon ? "pl-10" : ""
           } sm:text-lg border-gray-300 rounded-md`}
           placeholder={placeholder}

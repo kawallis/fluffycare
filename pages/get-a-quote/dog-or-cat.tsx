@@ -41,7 +41,7 @@ const DogOrCat: NextPage = () => {
                       aria-describedby={`${plan.id}-description`}
                       name="plan"
                       type="radio"
-                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                      className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
                     />
                   </div>
                   <div className="ml-3 text-2xl">
@@ -63,7 +63,7 @@ const DogOrCat: NextPage = () => {
             <button
               type="button"
               onClick={() => {}}
-              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Continue
             </button>

@@ -1,8 +1,22 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Lottie from "react-lottie-player";
+import * as lottieJson from "../../assets/95083-file-search.json";
 
 const Calculating: NextPage = () => {
+  const [isStopped, setIsStopped] = useState(true);
+  const [isPaused, setIsPaused] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      router.push("/get-a-quote/plans");
+    }, 3000);
+  }, []);
+
   return (
     <div>
       <Head>
@@ -17,18 +31,25 @@ const Calculating: NextPage = () => {
             Alright. Let’s get you a quote! Calculating....
           </h1>
         </div>
-        <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3"></div>
+        <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3">
+          <Lottie
+            loop
+            animationData={lottieJson}
+            play
+            style={{ width: 150, height: 150 }}
+          />
+        </div>
 
         <div className="h-32 flex justify-center items-end md:items-center py-6 w-full">
-          <Link href="/get-a-quote/age">
+          {/* <Link href="/get-a-quote/age">
             <button
               type="button"
               onClick={() => {}}
-              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Continue
             </button>
-          </Link>
+          </Link> */}
         </div>
       </main>
     </div>
