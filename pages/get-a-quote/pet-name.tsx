@@ -18,7 +18,7 @@ const PetName: NextPage = () => {
             Hello! Can’t wait to meet your furry friend. What is their name?
           </h1>
         </div>
-        <div className="h-72 flex justify-center items-center w-full md:w-1/2 lg:w-1/3">
+        <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3">
           <InputBox type="text" placeholder="Lucky" label="Pet Name" />
         </div>
 

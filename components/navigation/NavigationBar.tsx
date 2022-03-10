@@ -144,10 +144,10 @@ export default function NavigationBar() {
                 {!isAuthed && (
                   <a
                     href="#"
-                    className="block md:hidden border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:text-gray-700"
+                    className="block md:hidden border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-xs md:text-sm font-medium hover:text-gray-700"
                   >
                     <QuestionMarkCircleIcon
-                      className="mr-2 h-5 w-5"
+                      className="mr-1 md:mr-2 h-5 w-5"
                       aria-hidden="true"
                     />
                     Have a question
@@ -156,9 +156,12 @@ export default function NavigationBar() {
                 {isOnboardingFlow && (
                   <a
                     href="#"
-                    className="block md:hidden border-transparent text-gray-900 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    className="block md:hidden border-transparent text-gray-900 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-xs md:text-sm font-medium"
                   >
-                    <RefreshIcon className="mr-2 h-5 w-5" aria-hidden="true" />
+                    <RefreshIcon
+                      className="mr-1 md:mr-2 h-5 w-5"
+                      aria-hidden="true"
+                    />
                     Start Again
                   </a>
                 )}

@@ -17,7 +17,7 @@ const Calculating: NextPage = () => {
             Alright. Let’s get you a quote! Calculating....
           </h1>
         </div>
-        <div className="h-72 flex justify-center items-center w-full md:w-1/2 lg:w-1/3"></div>
+        <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3"></div>
 
         <div className="h-32 flex justify-center items-end md:items-center py-6 w-full">
           <Link href="/get-a-quote/age">

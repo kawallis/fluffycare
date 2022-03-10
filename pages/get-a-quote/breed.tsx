@@ -18,7 +18,7 @@ const Breed: NextPage = () => {
             Aww! I bet he’s a good boy! What kind of dog is he?
           </h1>
         </div>
-        <div className="h-72 flex justify-center items-center w-full md:w-1/2 lg:w-1/3">
+        <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3">
           <BreedSearchBox />
         </div>
 
