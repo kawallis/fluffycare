@@ -105,7 +105,7 @@ export default function PaymentModal({
                       router.push("/get-a-quote/congratulations");
                     }}
                     type="button"
-                    className="w-full flex items-center justify-center bg-black border border-transparent text-white rounded-md py-2 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                    className="w-full flex items-center justify-center bg-black border border-transparent text-white rounded-md py-2 hover:bg-gray-800 focus:outline-none focus:ring-gray-900"
                   >
                     <span className="sr-only">Pay with Apple Pay</span>
                     <svg
