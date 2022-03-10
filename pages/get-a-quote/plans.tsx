@@ -14,7 +14,7 @@ function classNames(...classes: string[]) {
 const Plans: NextPage = () => {
   const router = useRouter();
   const { isSm } = useBreakpoint("sm");
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   let pricing = {
     tiers: [
@@ -94,7 +94,7 @@ const Plans: NextPage = () => {
                   {tier.title}
                 </h3>
                 {tier.mostPopular ? (
-                  <p className="absolute top-0 py-1.5 px-4 bg-indigo-500 rounded-full text-xs font-semibold uppercase tracking-wide text-white transform -translate-y-1/2">
+                  <p className="absolute top-0 py-1.5 px-4 bg-blue-500 rounded-full text-xs font-semibold uppercase tracking-wide text-white transform -translate-y-1/2">
                     Most popular
                   </p>
                 ) : null}
@@ -113,7 +113,7 @@ const Plans: NextPage = () => {
                   {tier.features.map((feature) => (
                     <li key={feature} className="flex">
                       <CheckIcon
-                        className="flex-shrink-0 w-6 h-6 text-indigo-500"
+                        className="flex-shrink-0 w-6 h-6 text-blue-500"
                         aria-hidden="true"
                       />
                       <span className="ml-3 text-gray-500">{feature}</span>
@@ -125,8 +125,8 @@ const Plans: NextPage = () => {
               <button
                 className={classNames(
                   tier.mostPopular
-                    ? "bg-indigo-500 text-white hover:bg-indigo-600"
-                    : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100",
+                    ? "bg-blue-500 text-white hover:bg-blue-600"
+                    : "bg-blue-50 text-blue-700 hover:bg-blue-100",
                   "mt-8 block w-full py-3 px-6 border border-transparent rounded-md text-center font-medium"
                 )}
                 onClick={() => setOpen(true)}

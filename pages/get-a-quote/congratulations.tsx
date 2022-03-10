@@ -14,23 +14,23 @@ const Congratulations: NextPage = () => {
       </Head>
 
       <main className="flex items-center flex-col max-h-full">
-        <div className="h-64 flex items-center justify-center p-4 w-full lg:w-3/4 flex-col">
-          <h1 className="text-3xl md:text-4xl font-bold text-center mb-6 mt-24">
-            Congratulations! Lucky is now covered!{" "}
-          </h1>
-          <p className="text-center text-gray-700 mb-12">
-            Your payment was successfully processed and Lucky’s coverage will
-            begin after midnight today. Go to your account to view your new
-            policy and explore!
-          </p>
-        </div>
-        <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/2">
+        <div className="h-32 flex items-center justify-center p-4 w-full lg:w-3/4 flex-col">
           <Lottie
             loop
             animationData={lottieJson}
             play
             style={{ width: 150, height: 150 }}
           />
+        </div>
+        <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/2 flex-col">
+          <h1 className="text-3xl md:text-4xl font-bold text-center mb-6">
+            Congratulations! Lucky is now covered!{" "}
+          </h1>
+          <p className="text-center text-gray-700">
+            Your payment was successfully processed and Lucky’s coverage will
+            begin after midnight today. Go to your account to view your new
+            policy and explore!
+          </p>
         </div>
 
         <div className="h-32 flex justify-center items-end md:items-center py-6 w-full">
