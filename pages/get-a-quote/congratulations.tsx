@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import Lottie from "react-lottie-player";
 import * as lottieJson from "../../assets/83726-season-fireworks.json";

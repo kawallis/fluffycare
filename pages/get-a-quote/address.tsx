@@ -41,9 +41,11 @@ const Address: NextPage = () => {
   });
 
   const handleContinue = async () => {
+    // @ts-ignore
     const res = await getGeocode({ address: address.description });
+    // @ts-ignore
     const zip = await getZipCode(res[0]);
-
+    // @ts-ignore
     let [streetNumber, street, city, state] = address.terms;
 
     setQuote({
@@ -53,6 +55,7 @@ const Address: NextPage = () => {
         address2: formik.getFieldProps("address2").value,
         city: city.value,
         state: state.value,
+        // @ts-ignore
         zip: zip,
       },
     });
