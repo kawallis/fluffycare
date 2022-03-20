@@ -1,7 +1,10 @@
+import { RadioGroup } from "@headlessui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import InputBox from "../../components/form/InputBox";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { Button } from "../../components/shared/Button";
+import { useQuote } from "../../store/quote";
 
 const plans = [
   {
@@ -15,6 +18,19 @@ const plans = [
 ];
 
 const DogOrCat: NextPage = () => {
+  const router = useRouter();
+  const [quote, setQuote] = useQuote();
+
+  let [plan, setPlan] = useState(quote.dog_or_cat);
+
+  const handleContinue = () => {
+    router.push("/get-a-quote/address");
+    setQuote({
+      ...quote,
+      dog_or_cat: plan,
+    });
+  };
+
   return (
     <div>
       <Head>
@@ -26,48 +42,74 @@ const DogOrCat: NextPage = () => {
       <main className="flex items-center flex-col max-h-full">
         <div className="h-48 flex items-end justify-center p-4 w-full lg:w-3/4">
           <h1 className="text-3xl md:text-4xl font-bold text-center">
-            Such a good name! Is Sprinkles a dog or a cat?
+            Such a good name! Is {quote.pet_name} a dog or a cat?
           </h1>
         </div>
         <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3">
-          <fieldset>
-            <legend className="sr-only">Sex</legend>
-            <div className="space-y-5">
-              {plans.map((plan) => (
-                <div key={plan.id} className="relative flex items-center mb-12">
+          <RadioGroup value={plan} onChange={setPlan}>
+            <RadioGroup.Option value="cat">
+              {({ checked }) => (
+                <div
+                  key={plans[1].id}
+                  className="relative flex items-center mb-12"
+                >
                   <div className="flex items-center h-5">
                     <input
-                      id={plan.id}
-                      aria-describedby={`${plan.id}-description`}
+                      id={plans[1].id}
+                      aria-describedby={`${plans[1].id}-description`}
                       name="plan"
                       type="radio"
+                      defaultChecked={checked}
                       className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
                     />
                   </div>
                   <div className="ml-3 text-2xl">
                     <label
-                      htmlFor={plan.id}
+                      htmlFor={plans[1].id}
                       className="font-medium text-gray-700"
                     >
-                      {plan.name}
+                      {plans[1].name}
                     </label>
                   </div>
                 </div>
-              ))}
-            </div>
-          </fieldset>{" "}
+              )}
+            </RadioGroup.Option>
+            <RadioGroup.Option value="dog">
+              {({ checked }) => (
+                <div
+                  key={plans[0].id}
+                  className="relative flex items-center mb-12"
+                >
+                  <div className="flex items-center h-5">
+                    <input
+                      id={plans[0].id}
+                      aria-describedby={`${plans[0].id}-description`}
+                      name="plan"
+                      type="radio"
+                      defaultChecked={checked}
+                      className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+                    />
+                  </div>
+                  <div className="ml-3 text-2xl">
+                    <label
+                      htmlFor={plans[0].id}
+                      className="font-medium text-gray-700"
+                    >
+                      {plans[0].name}
+                    </label>
+                  </div>
+                </div>
+              )}
+            </RadioGroup.Option>
+          </RadioGroup>
         </div>
 
         <div className="h-32 flex justify-center items-end md:items-center py-6 w-full">
-          <Link href="/get-a-quote/address">
-            <button
-              type="button"
-              onClick={() => {}}
-              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Continue
-            </button>
-          </Link>
+          <Button
+            onClick={handleContinue}
+            text="Continue"
+            disabled={plan.length == 0}
+          />
         </div>
       </main>
     </div>

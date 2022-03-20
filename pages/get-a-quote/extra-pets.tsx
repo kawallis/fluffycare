@@ -1,7 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import InputBox from "../../components/form/InputBox";
+import { Button } from "../../components/shared/Button";
+import { RadioGroup } from "@headlessui/react";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 const plans = [
   {
@@ -15,6 +17,14 @@ const plans = [
 ];
 
 const ExtraPets: NextPage = () => {
+  const router = useRouter();
+
+  let [plan, setPlan] = useState("");
+
+  const handleContinue = () => {
+    router.push("/get-a-quote/signup");
+  };
+
   return (
     <div>
       <Head>
@@ -29,45 +39,93 @@ const ExtraPets: NextPage = () => {
             Out of curiosity, is there any more cats or dogs living with ya’ll?
           </h1>
         </div>
-        <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3">
-          <fieldset>
-            <legend className="sr-only">Sex</legend>
-            <div className="space-y-5">
-              {plans.map((plan) => (
-                <div key={plan.id} className="relative flex items-center mb-12">
+        <div className="h-92 flex justify-center items-center md:items-center w-full md:w-1/2 lg:w-1/3 flex-col my-12">
+          <RadioGroup value={plan} onChange={setPlan}>
+            <RadioGroup.Option value="no">
+              {({ checked }) => (
+                <div
+                  key={plans[1].id}
+                  className="relative flex items-center mb-12"
+                >
                   <div className="flex items-center h-5">
                     <input
-                      id={plan.id}
-                      aria-describedby={`${plan.id}-description`}
+                      id={plans[1].id}
+                      aria-describedby={`${plans[1].id}-description`}
                       name="plan"
                       type="radio"
+                      defaultChecked={checked}
                       className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
                     />
                   </div>
                   <div className="ml-3 text-2xl">
                     <label
-                      htmlFor={plan.id}
+                      htmlFor={plans[1].id}
                       className="font-medium text-gray-700"
                     >
-                      {plan.name}
+                      {plans[1].name}
                     </label>
                   </div>
                 </div>
-              ))}
+              )}
+            </RadioGroup.Option>
+            <RadioGroup.Option value="yes">
+              {({ checked }) => (
+                <div
+                  key={plans[0].id}
+                  className="relative flex items-center mb-4"
+                >
+                  <div className="flex items-center h-5">
+                    <input
+                      id={plans[0].id}
+                      aria-describedby={`${plans[0].id}-description`}
+                      name="plan"
+                      type="radio"
+                      defaultChecked={checked}
+                      className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+                    />
+                  </div>
+                  <div className="ml-3 text-2xl">
+                    <label
+                      htmlFor={plans[0].id}
+                      className="font-medium text-gray-700"
+                    >
+                      {plans[0].name}
+                    </label>
+                  </div>
+                </div>
+              )}
+            </RadioGroup.Option>
+          </RadioGroup>
+
+          {plan === "yes" && (
+            <div className="rounded-md bg-gray-50 p-4">
+              <div className="flex">
+                <div className="flex-shrink-0"></div>
+                <div className="ml-3">
+                  <h3 className="text-sm leading-5 font-medium text-gray-800">
+                    Great!
+                  </h3>
+                  <div className="mt-2 text-sm leading-5 text-gray-700">
+                    <ul className="list-disc pl-5">
+                      <li>
+                        We can work on adding your other animals to your plan
+                        after we finish. Also you will receive a discount for
+                        any extra pet your add!
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
-          </fieldset>{" "}
+          )}
         </div>
 
         <div className="h-32 flex justify-center items-end md:items-center py-6 w-full">
-          <Link href="/get-a-quote/signup">
-            <button
-              type="button"
-              onClick={() => {}}
-              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Continue
-            </button>
-          </Link>
+          <Button
+            onClick={handleContinue}
+            text="Continue"
+            disabled={plan.length == 0}
+          />
         </div>
       </main>
     </div>

@@ -1,9 +1,26 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import AgeDropDown from "../../components/form/AgeDropDown";
+import { Button } from "../../components/shared/Button";
+import { useQuote } from "../../store/quote";
 
 const Age: NextPage = () => {
+  const router = useRouter();
+  const [quote, setQuote] = useQuote();
+
+  const [selected, setSelected] = useState<string>(quote.pet_age);
+
+  const handleContinue = () => {
+    setQuote({
+      ...quote,
+      pet_age: selected,
+    });
+    router.push("/get-a-quote/boy-or-girl");
+  };
+
   return (
     <div>
       <Head>
@@ -15,25 +32,27 @@ const Age: NextPage = () => {
       <main className="flex items-center flex-col max-h-full">
         <div className="h-48 flex items-end justify-center p-4 w-full lg:w-3/4">
           <h1 className="text-3xl md:text-4xl font-bold text-center">
-            Cool! How old is Sprinkles?
+            Cool! How old is {quote.pet_name}?
           </h1>
         </div>
         <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3">
           <div className="w-full">
-            <AgeDropDown />
+            {/* @ts-ignore */}
+            <AgeDropDown
+              selected={selected}
+              setSelected={({ name }: { name: string }) => {
+                setSelected(name);
+              }}
+            />
           </div>
         </div>
 
         <div className="h-32 flex justify-center items-end md:items-center py-6 w-full">
-          <Link href="/get-a-quote/boy-or-girl">
-            <button
-              type="button"
-              onClick={() => {}}
-              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Continue
-            </button>
-          </Link>
+          <Button
+            onClick={handleContinue}
+            text="Continue"
+            disabled={!selected}
+          />
         </div>
       </main>
     </div>

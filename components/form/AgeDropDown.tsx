@@ -33,16 +33,22 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function AgeDropDown() {
-  const [selected, setSelected] = useState(ages[3]);
-
+export default function AgeDropDown({
+  selected,
+  setSelected,
+}: {
+  selected: null | string;
+  setSelected: ({ name: string }: any) => void;
+}) {
   return (
     <Listbox value={selected} onChange={setSelected}>
       {({ open }) => (
         <>
           <div className="mt-1 relative">
             <Listbox.Button className="bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-4 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-              <span className="block truncate text-lg">{selected.name}</span>
+              <span className="block truncate text-lg">
+                {selected || "Age"}
+              </span>
               <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <SelectorIcon
                   className="h-5 w-5 text-gray-400"

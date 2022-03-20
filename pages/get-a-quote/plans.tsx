@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { CheckIcon } from "@heroicons/react/outline";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 import PaymentModal from "../../components/modals/PaymentModal";
+import { useQuote } from "../../store/quote";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -13,6 +14,8 @@ function classNames(...classes: string[]) {
 
 const Plans: NextPage = () => {
   const router = useRouter();
+  const [quote, setQuote] = useQuote();
+
   const { isSm } = useBreakpoint("sm");
   const [open, setOpen] = useState(false);
 
@@ -79,7 +82,7 @@ const Plans: NextPage = () => {
 
       <main className="max-w-7xl mx-auto py-24 px-4 bg-white sm:px-6 lg:px-8">
         <h1 className="text-3xl md:text-4xl font-bold text-center">
-          Hooray! Here are the best plans that we found for Sprinkles
+          Hooray! Here are the best plans that we found for {quote.pet_name}
         </h1>
 
         {/* Tiers */}

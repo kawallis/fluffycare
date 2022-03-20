@@ -1,9 +1,24 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import BreedSearchBox from "../../components/form/BreedSearchBox";
+import { Button } from "../../components/shared/Button";
+import { useQuote } from "../../store/quote";
 
 const Breed: NextPage = () => {
+  const router = useRouter();
+  const [quote, setQuote] = useQuote();
+
+  const [selected, setSelected] = useState<string>(quote.breed);
+
+  const handleContinue = () => {
+    setQuote({
+      ...quote,
+      breed: selected,
+    });
+    router.push("/get-a-quote/extra-pets");
+  };
   return (
     <div>
       <Head>
@@ -15,23 +30,28 @@ const Breed: NextPage = () => {
       <main className="flex items-center flex-col max-h-full">
         <div className="h-48 flex items-end justify-center p-4 w-full lg:w-3/4">
           <h1 className="text-3xl md:text-4xl font-bold text-center">
-            Aww! I bet he’s a good boy! What kind of dog is he?
+            Aww! I bet {quote.pet_sex === "male" ? "he's" : "she's"} a good{" "}
+            {quote.pet_sex === "male" ? "boy" : "girl"}! What kind of{" "}
+            {quote.dog_or_cat} is {quote.pet_sex === "male" ? "he" : "she"}?
           </h1>
         </div>
         <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3">
-          <BreedSearchBox />
+          {/* @ts-ignore */}
+          <BreedSearchBox
+            breed={quote.breed}
+            selected={selected}
+            setSelected={({ name }: { name: string }) => {
+              setSelected(name);
+            }}
+          />
         </div>
 
         <div className="h-32 flex justify-center items-end md:items-center py-6 w-full">
-          <Link href="/get-a-quote/extra-pets">
-            <button
-              type="button"
-              onClick={() => {}}
-              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Continue
-            </button>
-          </Link>
+          <Button
+            onClick={handleContinue}
+            text="Continue"
+            disabled={!selected}
+          />
         </div>
       </main>
     </div>

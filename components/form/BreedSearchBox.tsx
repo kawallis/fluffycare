@@ -7,30 +7,45 @@ function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function BreedSearchBox() {
+export default function BreedSearchBox({
+  breed,
+  selected,
+  setSelected,
+}: {
+  breed: string;
+  selected: null | string;
+  setSelected: ({ name: string }: any) => void;
+}) {
   const [query, setQuery] = useState("");
-  const [selectedBreed, setSelectedBreed] = useState();
 
-  const filteredBreed =
+  const filteredDogs =
     query === ""
       ? dogs
       : dogs.filter((person) => {
           return person.name.toLowerCase().includes(query.toLowerCase());
         });
 
+  const filteredCats =
+    query === ""
+      ? cats
+      : cats.filter((person) => {
+          return person.name.toLowerCase().includes(query.toLowerCase());
+        });
+
+  const filteredBreed = breed === "dog" ? filteredDogs : filteredCats;
   return (
     <Combobox
       as="div"
-      value={selectedBreed}
-      onChange={setSelectedBreed}
+      value={selected}
+      onChange={setSelected}
       className="w-full"
     >
       <div className="relative mt-1 w-full">
         <Combobox.Input
           className="w-full rounded-md border border-gray-300 bg-white py-4 pl-3 pr-10 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
           onChange={(event) => setQuery(event.target.value)}
-          displayValue={(breed: { name: string; id: string }) => breed.name}
-          placeholder="Poodle"
+          displayValue={(breed: string) => breed}
+          placeholder={breed === "dog" ? "Poodle" : "Alley Cat"}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />

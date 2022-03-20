@@ -1,9 +1,65 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
+import { useState } from "react";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getZipCode,
+} from "use-places-autocomplete";
+import { Button } from "../../components/shared/Button";
+import * as Yup from "yup";
+
 import LocationSearchBox from "../../components/form/LocationSearchBox";
+import { useQuote } from "../../store/quote";
+import { useRouter } from "next/router";
+import { useFormik } from "formik";
+import InputBox from "../../components/form/InputBox";
 
 const Address: NextPage = () => {
+  const router = useRouter();
+  const [quote, setQuote] = useQuote();
+
+  const [address, setAddress] = useState("");
+  const formik = useFormik({
+    initialValues: {
+      address2: "",
+    },
+    validationSchema: Yup.object({
+      address2: Yup.string(),
+    }),
+    onSubmit: async ({ address2 }) => {},
+  });
+
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {},
+    debounce: 300,
+  });
+
+  const handleContinue = async () => {
+    const res = await getGeocode({ address: address.description });
+    const zip = await getZipCode(res[0]);
+
+    let [streetNumber, street, city, state] = address.terms;
+
+    setQuote({
+      ...quote,
+      mailing_address: {
+        address1: streetNumber.value + " " + street.value,
+        address2: formik.getFieldProps("address2").value,
+        city: city.value,
+        state: state.value,
+        zip: zip,
+      },
+    });
+
+    router.push("/get-a-quote/age");
+  };
+
   return (
     <div>
       <Head>
@@ -18,20 +74,34 @@ const Address: NextPage = () => {
             Awesome! Where do ya’ll live?
           </h1>
         </div>
-        <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3">
-          <LocationSearchBox />
+        <div className="h-72 flex justify-center items-baseline md:items-baseline w-full md:w-1/2 lg:w-1/3 flex-col">
+          <LocationSearchBox
+            value={value}
+            setValue={setValue}
+            address={address}
+            setAddress={setAddress}
+            suggestions={data}
+          />
+          <InputBox
+            type="text"
+            placeholder=""
+            label="Apt / Unit # (Optional)"
+            name={formik.getFieldProps("address2").name}
+            value={formik.getFieldProps("address2").value}
+            onChange={formik.getFieldProps("address2").onChange}
+            onBlur={formik.getFieldProps("address2").onBlur}
+            touched={formik.touched.address2}
+            error={formik.errors.address2}
+            containerClassName="mt-4 w-1/2"
+          />
         </div>
 
         <div className="h-32 flex justify-center items-end md:items-center py-6 w-full">
-          <Link href="/get-a-quote/age">
-            <button
-              type="button"
-              onClick={() => {}}
-              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Continue
-            </button>
-          </Link>
+          <Button
+            onClick={handleContinue}
+            text="Continue"
+            disabled={!address}
+          />
         </div>
       </main>
     </div>

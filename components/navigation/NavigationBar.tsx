@@ -2,6 +2,9 @@ import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { PlusSmIcon } from "@heroicons/react/solid";
+import { useAuthState } from "react-firebase-hooks/auth";
+import Link from "next/link";
+
 import {
   RefreshIcon,
   QuestionMarkCircleIcon,
@@ -11,14 +14,21 @@ import {
 } from "@heroicons/react/outline";
 import StartOverModal from "../modals/StartOverModal";
 import HaveAQuestionModal from "../modals/HaveAQuestionModal";
+import { auth } from "../../config/firebase";
+import { signOut } from "@firebase/auth";
+import { useRouter } from "next/router";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function NavigationBar() {
-  const isAuthed = false;
-  const isOnboardingFlow = true;
+  const router = useRouter();
+  const [user, loading, error] = useAuthState(auth);
+
+  const isAuthed = !!user;
+  const hasPolicy = false;
+  const isQuoteFlow = router.pathname.includes("get-a-quote");
 
   const [startUpModalOpen, setStartUpModalOpen] = useState(false);
   const [haveAQuestionModalOpen, setHaveQuestionModalOpen] = useState(false);
@@ -64,7 +74,7 @@ export default function NavigationBar() {
                       />
                       Have a question
                     </button>
-                    {isOnboardingFlow && (
+                    {isQuoteFlow && (
                       <button
                         onClick={() => setStartUpModalOpen(true)}
                         className="border-transparent text-gray-900 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
@@ -101,43 +111,47 @@ export default function NavigationBar() {
                           leaveTo="transform opacity-0 scale-95"
                         >
                           <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <Link href="/policy">
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <p
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700"
+                                    )}
+                                  >
+                                    Your Policies
+                                  </p>
+                                )}
+                              </Menu.Item>
+                            </Link>
+                            <Link href="/settings">
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <p
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                    )}
+                                  >
+                                    Settings
+                                  </p>
+                                )}
+                              </Menu.Item>
+                            </Link>
                             <Menu.Item>
                               {({ active }) => (
-                                <a
-                                  href="#"
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  Your Policies
-                                </a>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <a
-                                  href="#"
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  Settings
-                                </a>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <a
-                                  href="#"
+                                <button
+                                  onClick={() => {
+                                    signOut(auth);
+                                  }}
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
                                     "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                 >
                                   Sign out
-                                </a>
+                                </button>
                               )}
                             </Menu.Item>
                           </Menu.Items>
@@ -159,7 +173,7 @@ export default function NavigationBar() {
                       Have a question
                     </button>
                   )}
-                  {isOnboardingFlow && (
+                  {isQuoteFlow && (
                     <button
                       onClick={() => setStartUpModalOpen(true)}
                       className="block md:hidden border-transparent text-gray-900 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-xs md:text-sm font-medium"
@@ -171,7 +185,7 @@ export default function NavigationBar() {
                       Start Again
                     </button>
                   )}
-                  {isAuthed && (
+                  {isAuthed && hasPolicy && (
                     <div className="ml-6 flex flex-row items-center">
                       <a
                         href="#"
@@ -213,7 +227,7 @@ export default function NavigationBar() {
                   </Disclosure.Button>
                   <Disclosure.Button
                     as="a"
-                    href="#"
+                    href="/policy"
                     className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                   >
                     <InboxIcon
@@ -222,9 +236,10 @@ export default function NavigationBar() {
                     />
                     Your Policies
                   </Disclosure.Button>
+
                   <Disclosure.Button
                     as="a"
-                    href="#"
+                    href="/settings"
                     className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                   >
                     <CogIcon
@@ -233,17 +248,19 @@ export default function NavigationBar() {
                     />
                     Settings
                   </Disclosure.Button>
-                  <Disclosure.Button
-                    as="a"
-                    href="#"
-                    className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                  >
-                    <DocumentAddIcon
-                      className="mr-2 h-5 w-5 inline-block"
-                      aria-hidden="true"
-                    />
-                    What is a Claim
-                  </Disclosure.Button>
+                  {hasPolicy && (
+                    <Disclosure.Button
+                      as="a"
+                      href="#"
+                      className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                    >
+                      <DocumentAddIcon
+                        className="mr-2 h-5 w-5 inline-block"
+                        aria-hidden="true"
+                      />
+                      What is a Claim
+                    </Disclosure.Button>
+                  )}
                   <Disclosure.Button
                     as="a"
                     href="#"

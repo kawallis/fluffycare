@@ -1,9 +1,33 @@
+import { useFormik } from "formik";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
+import React from "react";
 import InputBox from "../../components/form/InputBox";
+import { Button } from "../../components/shared/Button";
+import * as Yup from "yup";
+import { useQuote } from "../../store/quote";
+import { useRouter } from "next/router";
 
 const PetName: NextPage = () => {
+  const [quote, setQuote] = useQuote();
+  const router = useRouter();
+
+  const formik = useFormik({
+    initialValues: {
+      name: quote.pet_name,
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().min(2).required("Required"),
+    }),
+    onSubmit: async ({ name }) => {
+      router.push("/get-a-quote/dog-or-cat");
+      setQuote({
+        ...quote,
+        pet_name: name,
+      });
+    },
+  });
+
   return (
     <div>
       <Head>
@@ -19,19 +43,25 @@ const PetName: NextPage = () => {
           </h1>
         </div>
         <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3">
-          <InputBox type="text" placeholder="Lucky" label="Pet Name" />
+          <InputBox
+            type="text"
+            placeholder="Your Pet's Name"
+            label=""
+            name={formik.getFieldProps("name").name}
+            value={formik.getFieldProps("name").value}
+            onChange={formik.getFieldProps("name").onChange}
+            onBlur={formik.getFieldProps("name").onBlur}
+            touched={formik.touched.name}
+            error={formik.errors.name}
+          />
         </div>
 
         <div className="h-32 flex justify-center items-end md:items-center py-6 w-full">
-          <Link href="/get-a-quote/dog-or-cat">
-            <button
-              type="button"
-              onClick={() => {}}
-              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Continue
-            </button>
-          </Link>
+          <Button
+            onClick={formik.submitForm}
+            text="Continue"
+            disabled={!(formik.dirty && formik.isValid)}
+          />
         </div>
       </main>
     </div>

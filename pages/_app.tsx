@@ -3,6 +3,8 @@ import type { AppProps } from "next/app";
 import NavigationBar from "../components/navigation/NavigationBar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import "../config/firebase";
+import { QuoteProvider } from "../store/quote";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -15,12 +17,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   return (
-    <>
-      <NavigationBar />
-      <div className="max-w-7xl mx-auto px-4">
-        <Component {...pageProps} />
-      </div>
-    </>
+    <QuoteProvider>
+      <>
+        <NavigationBar />
+        <div className="max-w-7xl mx-auto px-4">
+          <Component {...pageProps} />
+        </div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDt_ENG-d5jcPQwmsAqxL_J7rHnm8eY83o&libraries=places"></script>
+      </>
+    </QuoteProvider>
   );
 }
 
