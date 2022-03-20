@@ -1,5 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
+import Script from "next/script";
+
 import NavigationBar from "../components/navigation/NavigationBar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
@@ -23,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <div className="max-w-7xl mx-auto px-4">
           <Component {...pageProps} />
         </div>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDt_ENG-d5jcPQwmsAqxL_J7rHnm8eY83o&libraries=places"></script>
+        <Script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDt_ENG-d5jcPQwmsAqxL_J7rHnm8eY83o&libraries=places"></Script>
       </>
     </QuoteProvider>
   );

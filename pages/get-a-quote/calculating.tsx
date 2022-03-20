@@ -15,7 +15,7 @@ const Calculating: NextPage = () => {
     let timeout = setTimeout(() => {
       router.push("/get-a-quote/plans");
     }, 3000);
-  }, []);
+  }, [router]);
 
   return (
     <div>
@@ -40,17 +40,7 @@ const Calculating: NextPage = () => {
           />
         </div>
 
-        <div className="h-32 flex justify-center items-end md:items-center py-6 w-full">
-          {/* <Link href="/get-a-quote/age">
-            <button
-              type="button"
-              onClick={() => {}}
-              className="inline-flex items-center justify-center w-full md:w-1/3 lg:w-1/4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Continue
-            </button>
-          </Link> */}
-        </div>
+        <div className="h-32 flex justify-center items-end md:items-center py-6 w-full"></div>
       </main>
     </div>
   );
