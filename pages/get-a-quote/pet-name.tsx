@@ -1,12 +1,27 @@
 import { useFormik } from "formik";
 import type { NextPage } from "next";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
 import InputBox from "../../components/form/InputBox";
 import { Button } from "../../components/shared/Button";
 import * as Yup from "yup";
 import { useQuote } from "../../store/quote";
 import { useRouter } from "next/router";
+
+function useForm() {
+  return useFormik({
+    initialValues: {
+      on: false,
+    },
+    validationSchema: Yup.object({
+      on: Yup.boolean().required(),
+    }),
+    validateOnMount: true,
+    async onSubmit() {
+      alert("done");
+    },
+  });
+}
 
 const PetName: NextPage = () => {
   const [quote, setQuote] = useQuote();
@@ -27,6 +42,10 @@ const PetName: NextPage = () => {
       });
     },
   });
+
+  useEffect(() => {
+    formik.validateForm();
+  }, []);
 
   return (
     <div>
@@ -60,7 +79,7 @@ const PetName: NextPage = () => {
           <Button
             onClick={formik.submitForm}
             text="Continue"
-            disabled={!(formik.dirty && formik.isValid)}
+            disabled={!formik.isValid}
           />
         </div>
       </main>

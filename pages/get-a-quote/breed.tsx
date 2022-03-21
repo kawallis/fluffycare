@@ -38,7 +38,7 @@ const Breed: NextPage = () => {
         <div className="h-72 flex justify-center items-baseline md:items-center w-full md:w-1/2 lg:w-1/3">
           {/* @ts-ignore */}
           <BreedSearchBox
-            breed={quote.breed}
+            dog_or_cat={quote.dog_or_cat}
             selected={selected}
             setSelected={({ name }: { name: string }) => {
               setSelected(name);

@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import useLocalStorageState from "use-local-storage-state";
 
 type Props = {};
 
@@ -23,6 +24,21 @@ interface QuoteInterface {
   breed: string;
 }
 
+export const INITIAL = {
+  pet_name: "",
+  dog_or_cat: "",
+  mailing_address: {
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+  },
+  pet_age: "",
+  pet_sex: "",
+  breed: "",
+};
+
 const QuoteContext = React.createContext(
   {} as [QuoteInterface, Dispatch<SetStateAction<QuoteInterface>>]
 );
@@ -32,35 +48,10 @@ const useQuote = (): [
 ] => useContext(QuoteContext);
 
 const QuoteProvider: React.FC<Props> = ({ children }) => {
-  const [quote, setQuote] = useState({
-    pet_name: "",
-    dog_or_cat: "",
-    mailing_address: {
-      address1: "",
-      address2: "",
-      city: "",
-      state: "",
-      zip: "",
-    },
-    pet_age: "",
-    pet_sex: "",
-    breed: "",
+  const [quote, setQuote] = useLocalStorageState("quote", {
+    ssr: true,
+    defaultValue: INITIAL,
   });
-
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("quote") || "{}")) {
-      //checking if there already is a state in localstorage
-      //if yes, update the current state with the stored one
-      setQuote({
-        ...quote,
-        ...JSON.parse(localStorage.getItem("quote") || "{}"),
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("quote", JSON.stringify(quote));
-  }, [quote]);
 
   return (
     <QuoteContext.Provider value={[quote, setQuote]}>

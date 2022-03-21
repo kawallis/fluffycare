@@ -8,11 +8,11 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 export default function BreedSearchBox({
-  breed,
+  dog_or_cat,
   selected,
   setSelected,
 }: {
-  breed: string;
+  dog_or_cat: string;
   selected: null | string;
   setSelected: ({ name: string }: any) => void;
 }) {
@@ -32,7 +32,8 @@ export default function BreedSearchBox({
           return person.name.toLowerCase().includes(query.toLowerCase());
         });
 
-  const filteredBreed = breed === "dog" ? filteredDogs : filteredCats;
+  const filteredBreed = dog_or_cat === "dog" ? filteredDogs : filteredCats;
+
   return (
     <Combobox
       as="div"
@@ -45,7 +46,7 @@ export default function BreedSearchBox({
           className="w-full rounded-md border border-gray-300 bg-white py-4 pl-3 pr-10 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
           onChange={(event) => setQuery(event.target.value)}
           displayValue={(breed: string) => breed}
-          placeholder={breed === "dog" ? "Poodle" : "Alley Cat"}
+          placeholder={dog_or_cat === "dog" ? "Poodle" : "Alley Cat"}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
