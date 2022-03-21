@@ -4,6 +4,8 @@ import { Button } from "../../components/shared/Button";
 import { RadioGroup } from "@headlessui/react";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../config/firebase";
 
 const plans = [
   {
@@ -18,11 +20,16 @@ const plans = [
 
 const ExtraPets: NextPage = () => {
   const router = useRouter();
+  const [user] = useAuthState(auth);
 
   let [plan, setPlan] = useState("");
 
   const handleContinue = () => {
-    router.push("/get-a-quote/signup");
+    if (user) {
+      router.push("/get-a-quote/calculating");
+    } else {
+      router.push("/get-a-quote/signup");
+    }
   };
 
   return (
