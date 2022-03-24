@@ -52,11 +52,6 @@ export default function Login() {
         <div className="flex-1 flex flex-col justify-center px-12 lg:flex-none w-2/5 md:w-1/2">
           <div className="mx-auto w-full px-12 lg:px-24 py-24 pb-56">
             <div>
-              <img
-                className="h-12 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-mark-blue-600.svg"
-                alt="Workflow"
-              />
               <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
                 Sign in to your account
               </h2>

@@ -1,6 +1,13 @@
 import { MailIcon, PhoneIcon } from "@heroicons/react/outline";
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { db } from "../../config/firebase";
+import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import InputBox from "../../components/form/InputBox";
+import InputTextArea from "../../components/form/InputTextArea";
+import { useAlert } from "../../hooks/useAlert";
 
 export default function HaveAQuestionModal({
   open,
@@ -10,6 +17,48 @@ export default function HaveAQuestionModal({
   setOpen: (open: boolean) => void;
 }) {
   const cancelButtonRef = useRef(null);
+  const alert = useAlert();
+
+  let [remoteError, setRemoteError] = useState<string | null>(null);
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().min(5).required("Required"),
+      email: Yup.string().email("Invalid email address").required("Required"),
+      message: Yup.string().min(10).required("Required"),
+    }),
+    onSubmit: async ({ name, email, message }) => {
+      try {
+        console.log({
+          name,
+          email,
+          message,
+        });
+        await setDoc(doc(collection(db, "feedback")), {
+          email,
+          name,
+          message,
+          createdAt: serverTimestamp(),
+        });
+        //@ts-ignore
+        alert.showAlert(
+          "Successfully sent!",
+          "We will review this feeback and get back to you shortly with an answer.",
+          "SUCCESS"
+        );
+        setOpen(false);
+        formik.resetForm();
+      } catch (e: any) {
+        console.log(e);
+        setRemoteError(e.message as string);
+      }
+    },
+  });
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -59,63 +108,46 @@ export default function HaveAQuestionModal({
                     volutpat massa dictumst amet. Sapien tortor lacus arcu.
                   </p>
                   <div className="grid grid-cols-1 gap-y-6">
-                    <div>
-                      <label htmlFor="full-name" className="sr-only">
-                        Full name
-                      </label>
-                      <input
-                        type="text"
-                        name="full-name"
-                        id="full-name"
-                        autoComplete="name"
-                        className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
-                        placeholder="Full name"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="sr-only">
-                        Email
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
-                        placeholder="Email"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="phone" className="sr-only">
-                        Phone
-                      </label>
-                      <input
-                        type="text"
-                        name="phone"
-                        id="phone"
-                        autoComplete="tel"
-                        className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
-                        placeholder="Phone"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="message" className="sr-only">
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        rows={4}
-                        className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 border border-gray-300 rounded-md"
-                        placeholder="Message"
-                        defaultValue={""}
-                      />
-                    </div>
+                    <InputBox
+                      type="text"
+                      placeholder="Name"
+                      label=""
+                      icon="users"
+                      name={formik.getFieldProps("name").name}
+                      value={formik.getFieldProps("name").value}
+                      onChange={formik.getFieldProps("name").onChange}
+                      onBlur={formik.getFieldProps("name").onBlur}
+                      touched={formik.touched.name}
+                      error={formik.errors.name}
+                    />
+                    <InputBox
+                      type="email"
+                      placeholder="Email"
+                      label=""
+                      icon="mail"
+                      name={formik.getFieldProps("email").name}
+                      value={formik.getFieldProps("email").value}
+                      onChange={formik.getFieldProps("email").onChange}
+                      onBlur={formik.getFieldProps("email").onBlur}
+                      touched={formik.touched.email}
+                      error={formik.errors.email}
+                    />
+                    <InputTextArea
+                      type="message"
+                      placeholder="Message"
+                      label=""
+                      name={formik.getFieldProps("message").name}
+                      value={formik.getFieldProps("message").value}
+                      onChange={formik.getFieldProps("message").onChange}
+                      onBlur={formik.getFieldProps("message").onBlur}
+                      touched={formik.touched.message}
+                      error={formik.errors.message}
+                    />
                     <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                       <button
                         type="button"
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-                        onClick={() => setOpen(false)}
+                        onClick={() => formik.submitForm()}
                       >
                         Submit
                       </button>
