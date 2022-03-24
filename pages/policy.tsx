@@ -45,9 +45,8 @@ const Policy: NextPage = () => {
             <h1 className="text-2xl font-semibold text-gray-900">Polices</h1>
             <p className="mt-2 text-base text-gray-700">
               Currently you have{" "}
-              <strong className="font-semibold text-gray-900">0</strong>{" "}
-              policies. Start a quote today and you'll be covered as early as
-              tomorrow.
+              <span className="font-semibold text-gray-900">0</span> policies.
+              Start a quote today and you'll be covered as early as tomorrow.
             </p>
           </div>
         </div>
