@@ -55,10 +55,7 @@ export default function Login() {
                 Sign in to your account
               </h2>
               <p className="mt-2 text-sm text-gray-600">
-                Or{" "}
-                <span className="font-medium text-blue-600 hover:text-blue-500">
-                  check prices for your pet's insurance
-                </span>
+                Or check prices for your pet's insurance
               </p>
             </div>
 
