@@ -70,7 +70,7 @@ export default function InputBox({
           name={name}
           className={`focus:ring-blue-500 focus:border-blue-500 block py-4 w-full ${
             icon ? "pl-10" : ""
-          } sm:text-lg border-gray-300 rounded-md ${
+          } sm:text-sm border-gray-300 rounded-md ${
             hasError
               ? "border-red-400 text-red-900 placeholder-red-400 focus:ring-red-500 focus:border-red-500"
               : ""

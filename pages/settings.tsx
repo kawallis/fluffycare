@@ -4,6 +4,7 @@ import { auth, db } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { collection, query, where } from "firebase/firestore";
+import { DashboardWrapper } from "../components/shared/DashboardWrapper";
 
 const Settings: NextPage = () => {
   const [user] = useAuthState(auth);
@@ -24,7 +25,7 @@ const Settings: NextPage = () => {
   });
 
   return (
-    <div>
+    <DashboardWrapper>
       <div className="pb-5 border-b border-gray-200 mt-12">
         <h3 className="text-lg leading-6 font-medium text-gray-900">
           Account Settings
@@ -57,7 +58,7 @@ const Settings: NextPage = () => {
           </ul>
         </div>
       </div>
-    </div>
+    </DashboardWrapper>
   );
 };
 

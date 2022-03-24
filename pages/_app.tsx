@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QuoteProvider>
       <>
         <NavigationBar />
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="">
           <Component {...pageProps} />
         </div>
         <Script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDt_ENG-d5jcPQwmsAqxL_J7rHnm8eY83o&libraries=places"></Script>

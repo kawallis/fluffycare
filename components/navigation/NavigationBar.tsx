@@ -27,7 +27,7 @@ export default function NavigationBar() {
   const [user, loading, error] = useAuthState(auth);
 
   const isAuthed = !!user;
-  const hasPolicy = false;
+  const hasPolicy = true;
   const isQuoteFlow = router.pathname.includes("get-a-quote");
 
   const [startUpModalOpen, setStartUpModalOpen] = useState(false);
@@ -117,7 +117,7 @@ export default function NavigationBar() {
                                   <p
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-gray-700"
+                                      "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
                                     )}
                                   >
                                     Your Policies
@@ -144,10 +144,11 @@ export default function NavigationBar() {
                                 <button
                                   onClick={() => {
                                     signOut(auth);
+                                    router.push("/login");
                                   }}
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
+                                    "block px-4 py-2 text-sm text-gray-700 w-full text-left"
                                   )}
                                 >
                                   Sign out
@@ -185,14 +186,20 @@ export default function NavigationBar() {
                       Start Again
                     </button>
                   )}
+                  {/* {!isAuthed && (
+                    <Link href="/login">
+                      <p className="hover:cursor-pointer hidden md:block border-transparent text-gray-900  hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium mr-6">
+                        Already have an account?
+                      </p>
+                    </Link>
+                  )} */}
                   {isAuthed && hasPolicy && (
                     <div className="ml-6 flex flex-row items-center">
-                      <a
-                        href="#"
-                        className="hidden md:block border-transparent text-gray-900  hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium mr-6"
-                      >
-                        What is a Claim
-                      </a>
+                      <Link href="/what-is-a-claim">
+                        <p className="cursor-pointer hidden md:block border-transparent text-gray-900  hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium mr-6">
+                          What is a Claim
+                        </p>
+                      </Link>
                       <div className="flex-shrink-0">
                         <button
                           type="button"
