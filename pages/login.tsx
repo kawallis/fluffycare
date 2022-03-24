@@ -1,8 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { AuthErrorCodes, signInWithEmailAndPassword } from "@firebase/auth";
-import { auth, db } from "../config/firebase";
-import { setDoc, doc, serverTimestamp } from "@firebase/firestore";
+import { auth } from "../config/firebase";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -50,7 +49,7 @@ export default function Login() {
     <>
       <div className="min-h-full flex">
         <div className="flex-1 flex flex-col justify-center px-12 lg:flex-none w-2/5 md:w-1/2">
-          <div className="mx-auto w-full px-12 lg:px-24 py-24 pb-56">
+          <div className="mx-auto w-full px-12 lg:px-24 py-24 pb-64">
             <div>
               <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
                 Sign in to your account
@@ -134,10 +133,10 @@ export default function Login() {
           </div>
         </div>
         <div className="hidden lg:block relative w-3/5">
-          <img
-            className="absolute inset-0 h-full w-full object-cover"
-            src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-            alt=""
+          <div
+            className="absolute inset-0 h-full w-full object-cover bg-gray-50"
+            // src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+            // alt=""
           />
         </div>
       </div>
